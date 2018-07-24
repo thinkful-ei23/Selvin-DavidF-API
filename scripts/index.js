@@ -22,31 +22,12 @@ const store = {
 // TASK: Add the Youtube Search API Base URL here:
 // Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
 const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
-<<<<<<< HEAD
-
-=======
->>>>>>> 3b12fd1a3335d0cd9c35ee0aa5bb917ad634df8d
 
 // TASK:
 // 1. Create a `fetchVideos` function that receives a `searchTerm` and `callback`
 // 2. Use `searchTerm` to construct the right query object based on the Youtube API docs
 // 3. Make a getJSON call using the query object and sending the provided callback in as the last argument
 // TEST IT! Execute this function and console log the results inside the callback.
-<<<<<<< HEAD
-
-const fetchVideos = function(searchTerm, response) {
-  $.getJSON(BASE_URL,  
-    response = 'console.log(response)',
-    { 'key': API_KEY,
-      'part': 'snippet',
-      'q': 'cat videos'
-    }    
-  );
-};
-
-
-// TASK:
-=======
 const fetchVideos = function(searchTerm, callback) {
   const query = {
     'key' : API_KEY,
@@ -57,9 +38,6 @@ const fetchVideos = function(searchTerm, callback) {
   $.getJSON(BASE_URL, query, callback);
 };
 
-
-
->>>>>>> 3b12fd1a3335d0cd9c35ee0aa5bb917ad634df8d
 // 1. Create a `decorateResponse` function that receives the Youtube API response
 // 2. Map through the response object's `items` array
 // 3. Return an array of objects, where each object contains the keys `id`, `title`, 
@@ -69,7 +47,6 @@ const fetchVideos = function(searchTerm, callback) {
 // you get back the object you want.
 const decorateResponse = function(response) {
   
-  console.log(response);
   const decoratedResponses = response.items.map(function(item){
     return {
       id: item.id.videoId,
@@ -77,7 +54,6 @@ const decorateResponse = function(response) {
       thumbnail: item.snippet.thumbnails.default.url,
     };
   });
-  console.log(decoratedResponses);
 };
 
 fetchVideos('batman', decorateResponse);
@@ -86,7 +62,12 @@ fetchVideos('batman', decorateResponse);
 // 2. Using the object, return an HTML string containing all the expected data
 // TEST IT!
 const generateVideoItemHtml = function(video) {
-
+  return `
+  <li data-video-id="${video.id}"=>
+    <h3>${video.title}</h3>
+    <img src="${video.thumbnail}" alt="">
+  </li>
+  `
 };
 
 // TASK:
@@ -94,7 +75,7 @@ const generateVideoItemHtml = function(video) {
 // objects and sets the array as the value held in store.videos
 // TEST IT!
 const addVideosToStore = function(videos) {
-
+  store.videos = videos;
 };
 
 // TASK:
@@ -103,7 +84,8 @@ const addVideosToStore = function(videos) {
 // 3. Add your array of DOM elements to the appropriate DOM element
 // TEST IT!
 const render = function() {
-
+  const htmlItems = store.videos.map(video => generateVideoItemHtml(video));
+  $('.results').html(htmlItems);
 };
 
 // TASK:
@@ -118,6 +100,13 @@ const render = function() {
 //   g) Inside the callback, run the `render` function 
 // TEST IT!
 const handleFormSubmit = function() {
+  $('#search-term').submit(function (event) {
+    event.preventDefault();
+    
+
+  })
+  
+  
 
 };
 
