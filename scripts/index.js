@@ -47,13 +47,14 @@ const fetchVideos = function(searchTerm, callback) {
 // you get back the object you want.
 const decorateResponse = function(response) {
   
-  const decoratedResponses = response.items.map(function(item){
+  return response.items.map(function(item){
     return {
       id: item.id.videoId,
       title: item.snippet.title,
       thumbnail: item.snippet.thumbnails.default.url,
     };
   });
+
 };
 
 // TASK:
@@ -74,7 +75,6 @@ const generateVideoItemHtml = function(video) {
 // objects and sets the array as the value held in store.videos
 // TEST IT!
 const addVideosToStore = function(videos) {
-  console.log(store.videos, videos);
   store.videos = videos;
   
 };
@@ -107,7 +107,6 @@ const handleFormSubmit = function() {
     $('#search-term').val('');
     fetchVideos(searchTerm, function(response){
       addVideosToStore(decorateResponse(response));
-      console.log(addVideosToStore(decorateResponse(response)));
       render();
     });
   });
