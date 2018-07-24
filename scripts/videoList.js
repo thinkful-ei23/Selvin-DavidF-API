@@ -1,20 +1,9 @@
 'use strict';
-/* global $, API, store */
+/* global $, api, store */
 
 const videoList = (function() { 
 
-  function decorateResponse(response) {
-    return response.items.map(function(item){
-      return {
-        id: item.id.videoId,
-        title: item.snippet.title,
-        thumbnail: item.snippet.thumbnails.default.url,
-      };
-    });
-  }
-
   function generateVideoItemHtml(video) {
-    console.log(video);
     return `
   <li data-video-id="${video.id}"=>
     <h3>${video.title}</h3>
@@ -28,13 +17,25 @@ const videoList = (function() {
     $('.results').html(html);
   }
 
+  const decorateResponse = function(fetchVideos) {
+    // console.log(fetchVideos);
+    return fetchVideos.items.map(function(item){
+      return {
+        id: item.id.videoId,
+        title: item.snippet.title,
+        thumbnail: item.snippet.thumbnails.default.url,
+      };
+    });
+  };
+
   function handleFormSubmit() {
     $('form').submit(function (event) {
       event.preventDefault();
       let searchTerm = $('#search-term').val();
       $('#search-term').val('');
-      API.fetchVideos(searchTerm, function(response){
-        store.addVideosToStore(decorateResponse(response));
+      api.fetchVideos(searchTerm, function(response){
+        const vidArray = decorateResponse(response);
+        store.addVideosToStore(vidArray);
         render();
       });
     });
@@ -42,13 +43,10 @@ const videoList = (function() {
 
   function bindEventListeners() {
     handleFormSubmit();
-    generateVideoItemHtml();
-    decorateResponse();
   }
 
   return {
     render,
     bindEventListeners
   };
-
 }());

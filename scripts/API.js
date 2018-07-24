@@ -1,25 +1,25 @@
 'use strict';
 /* global $ */
 
-const API = (function(){
+const api = (function(){
 
   const API_KEY = 'AIzaSyDdjxW9JL2BZLC6uKqxJRrmK9sjU4xg2hQ';
 
   const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
-  function fetchVideos(searchTerm, callback) {
+  const fetchVideos = function(searchTerm, callback) {
     const query = {
       'key' : API_KEY,
       'part' : 'snippet',
       'per_page': 5,
-      'q' : searchTerm
+      'q' : `${searchTerm} in:name`
     };
     $.getJSON(BASE_URL, query, callback);
-  }
-  
-  return {
-    API_KEY,
-    BASE_URL,
-    fetchVideos
   };
-});
+  
+  
+
+  return {
+    fetchVideos,
+  };
+}());
